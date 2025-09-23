@@ -34,6 +34,106 @@ This needs the notification permissions to be granted before using it. Will sile
 );
 ```
 
+real life usage scenario: 
+
+```ts
+import { useCallback } from 'react';
+
+import { Asset } from '#/typings';
+import {
+  getCameraPermissionsAsync,
+  requestCameraPermissionsAsync
+} from 'expo-image-picker';
+
+import { checkCameraPermission } from '@functions/image';
+
+import { useForegroundNotification } from '@hooks/useForegroundNotification';
+
+import { cameraPermissionsError } from '@utils/commonAlerts';
+import { crop, openCamera } from '@utils/picker';
+import { sleep } from '@utils/utils';
+
+type CameraOptions = {
+  errorContext?: string;
+  onError?: (e: any) => void;
+  skipCropOnAndroid?: boolean;
+};
+
+/**
+ * A hook for handling camera operations with consistent error handling
+ * @returns A function to open camera and process the image
+ */
+export const useCamera = () => {
+  const { startForegroundService, stopForegroundService } = useForegroundNotification(
+    {
+      alert: false,
+      onServiceErrorCallBack: () => {
+        console.warn('Foreground service error');
+      }
+    },
+    {
+      ServiceType: 'dataSync',
+      icon: 'ic_launcher',
+      importance: 'low',
+      message: 'App will stay alive during capture',
+      setOnlyAlertOnce: true,
+      title: 'Camera Active',
+      visibility: 'secret'
+    }
+  );
+
+  const handleCameraCapture = useCallback(
+    async <T>(
+      onSuccess: (image: Asset) => T | Promise<T>,
+      options: CameraOptions = {}
+    ): Promise<T | undefined> => {
+      const { errorContext = 'CameraCapture', onError } = options;
+
+      try {
+        await startForegroundService();
+        /* Add small delay to let foreground service stabilize */
+        await sleep(100);
+        await checkCameraPermission();
+        const { status } = await getCameraPermissionsAsync();
+        if (status !== 'granted') {
+          const perm = await requestCameraPermissionsAsync();
+          if (perm.status !== 'granted') {
+            throw new Error('Required permission not granted');
+          }
+        }
+        const img = await openCamera();
+
+        /* Add delay after camera capture, similar to gallery */
+        await sleep(500);
+
+        const croppedImage = await crop(img.uri);
+
+        if (croppedImage) {
+          return await onSuccess(croppedImage);
+        }
+
+        return undefined;
+      } catch (e: any) {
+        console.log(e);
+        if (onError) {
+          onError(e);
+        } else {
+          cameraPermissionsError(e, errorContext);
+        }
+        return undefined;
+      } finally {
+        await stopForegroundService();
+      }
+    },
+    [startForegroundService, stopForegroundService]
+  );
+
+  return { handleCameraCapture };
+};
+
+```
+
+
 Make the appropriate changes in `AndroidManifest.xml` like the color and the channel name for the notification. 
 
 
