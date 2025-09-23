@@ -37,7 +37,7 @@ This needs the notification permissions to be granted before using it. Will sile
 Make the appropriate changes in `AndroidManifest.xml` like the color and the channel name for the notification. 
 
 
-I am too lazy to create an npm module for this so just copy paste in your modules folder. 
+I am too lazy to create an npm module for this so just copy paste in your `modules` folder. 
 
 
 More info on expo-modules can be found here: https://docs.expo.dev/modules/overview/ and https://docs.expo.dev/modules/native-module-tutorial/
