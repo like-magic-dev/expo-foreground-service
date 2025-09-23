@@ -1,6 +1,6 @@
-Works only on Android. Battle tested with thousands for devices.
+Works only on Android. Battle tested with thousands of devices and users.
 
-This needs the notifications permissions to be granted before using it. Will silently fail if there are no permissions, this module does NOT ask for permissions, it should be handled elsewhere in your code, for example: 
+This needs the notification permissions to be granted before using it. Will silently fail if there are no permissions, this module does NOT ask for permissions, it should be handled elsewhere in your code, for example: 
 
 ```ts
   if (isAndroid) {
