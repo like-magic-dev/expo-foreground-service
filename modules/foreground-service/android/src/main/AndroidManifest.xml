@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Define custom permission for secure broadcast -->
+    <permission
+        android:name="${applicationId}.permission.FOREGROUND_SERVICE_BROADCAST"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="${applicationId}.permission.FOREGROUND_SERVICE_BROADCAST" />
+
+    <application>
+        <meta-data
+            android:name="expo.modules.foregroundservice.notification_channel_name"
+            android:value="Put your app's channel name here ie. App Channel" />
+        <meta-data
+            android:name="expo.modules.foregroundservice.notification_channel_description"
+            android:value="App is running in foreground" />
+        <meta-data
+            android:name="expo.modules.foregroundservice.notification_color"
+            android:resource="@color/<use a color from your theme here>, pick it from android/app/src/main/res/values/colors.xml" />
+
+        <service
+            android:name=".ForegroundTaskService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync|camera|connectedDevice" />
+
+        <service
+            android:name=".HeadlessTaskRunner"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
+</manifest>
