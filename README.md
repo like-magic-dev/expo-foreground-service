@@ -41,3 +41,6 @@ I am too lazy to create an npm module for this so just copy paste in your `modul
 
 
 More info on expo-modules can be found here: https://docs.expo.dev/modules/overview/ and https://docs.expo.dev/modules/native-module-tutorial/
+
+
+No further documentation, sorry. It's straight forward, though. Just check the [types](https://github.com/efstathiosntonas/expo-foreground-service/blob/main/modules/foreground-service/src/ForegroundService.types.ts) and the [class](https://github.com/efstathiosntonas/expo-foreground-service/blob/main/modules/foreground-service/src/ForegroundService.ts) 😂
