@@ -20,9 +20,6 @@
         <meta-data
             android:name="expo.modules.foregroundservice.notification_channel_description"
             android:value="App is running in foreground" />
-        <meta-data
-            android:name="expo.modules.foregroundservice.notification_color"
-            android:resource="@color/<use a color from your theme here>, pick it from android/app/src/main/res/values/colors.xml" />
 
         <service
             android:name=".ForegroundTaskService"
