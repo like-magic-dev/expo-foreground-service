@@ -12,8 +12,33 @@ a no-op, so it's safe to import and use from shared code.
 npx expo install @like-magic-dev/expo-foreground-service
 ```
 
+Add the config plugin to your `app.json`/`app.config.js`, declaring which foreground service
+type(s) your app actually uses — this controls which `FOREGROUND_SERVICE_*` permission(s) get
+added to your manifest:
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "@like-magic-dev/expo-foreground-service",
+        {
+          "serviceTypes": ["dataSync"]
+        }
+      ]
+    ]
+  }
+}
+```
+
+`serviceTypes` defaults to `["dataSync"]` if omitted. Valid values: `dataSync`, `mediaPlayback`,
+`location`, `connectedDevice`, `camera`, `mediaProjection` — list every type you'll pass as
+`ServiceType` in any `start()`/`update()` call anywhere in the app. Each one adds exactly the
+matching `android.permission.FOREGROUND_SERVICE_*` permission (plus the always-required
+`FOREGROUND_SERVICE` and `WAKE_LOCK`), so only declare the types you actually use.
+
 Rebuild your dev client / native project afterwards (`npx expo prebuild` or a new EAS build) since
-this package ships native Android code.
+this package ships native Android code and the plugin only runs at prebuild time.
 
 ### Permissions
 
