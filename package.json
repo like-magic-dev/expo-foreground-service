@@ -1,6 +1,6 @@
 {
   "name": "@like-magic-dev/expo-foreground-service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run a resilient Android foreground service with a persistent, configurable notification and a background task runner, from Expo/React Native.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
